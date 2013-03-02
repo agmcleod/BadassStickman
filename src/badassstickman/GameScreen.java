@@ -2,6 +2,7 @@ package badassstickman;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -27,6 +28,7 @@ public class GameScreen implements Screen {
 		background.dispose();
 		batch.dispose();
 		stickman.dispose();
+		player.dispose();
 	}
 
 	@Override
@@ -47,6 +49,8 @@ public class GameScreen implements Screen {
 		batch.draw(healthBar, TILE_SIZE, Gdx.graphics.getHeight() - TILE_SIZE * 2);
 		player.render(batch);
 		batch.end();
+		
+		player.debug();
 	}
 
 	@Override
