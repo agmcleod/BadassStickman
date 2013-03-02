@@ -1,3 +1,4 @@
+package badassstickman;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
@@ -13,6 +14,7 @@ public class GameScreen implements Screen {
 	private BadassStickman game;
 	private Texture stickman;
 	private TextureRegion healthBar;
+	private Player player;
 	
 	static final int TILE_SIZE = 32; 
 	
@@ -29,14 +31,12 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void hide() {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
@@ -45,19 +45,18 @@ public class GameScreen implements Screen {
 		batch.begin();
 		batch.draw(background, 0, 0);
 		batch.draw(healthBar, TILE_SIZE, Gdx.graphics.getHeight() - TILE_SIZE * 2);
+		player.render(batch);
 		batch.end();
 	}
 
 	@Override
 	public void resize(int arg0, int arg1) {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void resume() {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
@@ -66,6 +65,7 @@ public class GameScreen implements Screen {
 		stickman = new Texture(Gdx.files.internal("assets/stickman.png"));
 		batch = new SpriteBatch();
 		healthBar = new TextureRegion(stickman, 0, TILE_SIZE * 28, TILE_SIZE * 8, TILE_SIZE);
+		player = new Player(stickman);
 	}
 
 }
