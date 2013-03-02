@@ -23,6 +23,7 @@ public class Stickman {
 	private Vector2 position;
 	private ShapeRenderer renderer;
 	private float stateTime = 0;
+	private boolean flipped = false;
 	
 	public Stickman(Vector2 position, int health, Texture image) {
 		this.setPosition(position);
@@ -121,5 +122,13 @@ public class Stickman {
 
 	public void setStateTime(float stateTime) {
 		this.stateTime = stateTime;
+	}
+
+	public boolean isFlipped() {
+		return flipped;
+	}
+
+	public void setFlipped(boolean flipped) {
+		this.flipped = flipped;
 	}
 }

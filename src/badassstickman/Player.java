@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Player extends Stickman {
 	public Player(Texture image) {
-		super(new Vector2(Gdx.graphics.getWidth() / 2, 32), 20, image);
+		super(new Vector2(Gdx.graphics.getWidth() / 2 - 60, 32), 20, image);
 		AnimationFrame[] frames = new AnimationFrame[1];
 		frames[0] = new AnimationFrame(0, 0, 128, 128);
 		TextureRegion[] regions = new TextureRegion[1];

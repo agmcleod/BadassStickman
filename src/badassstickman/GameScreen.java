@@ -1,5 +1,6 @@
 package badassstickman;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -22,6 +23,15 @@ public class GameScreen implements Screen {
 	public GameScreen(BadassStickman game) {
 		this.game = game;
 	}
+	
+	public void checkPlayerControls() {
+		if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+			player.setFlipped(true);
+		}
+		else if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+			player.setFlipped(false);
+		}
+	}
 
 	@Override
 	public void dispose() {
@@ -43,6 +53,7 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
+		update();
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		batch.begin();
 		batch.draw(background, 0, 0);
@@ -71,5 +82,8 @@ public class GameScreen implements Screen {
 		healthBar = new TextureRegion(stickman, 0, TILE_SIZE * 28, TILE_SIZE * 8, TILE_SIZE);
 		player = new Player(stickman);
 	}
-
+	
+	public void update() {
+		checkPlayerControls();
+	}
 }
