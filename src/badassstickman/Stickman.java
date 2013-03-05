@@ -23,7 +23,7 @@ public class Stickman {
 	private Vector2 position;
 	private ShapeRenderer renderer;
 	private float stateTime = 0;
-	private boolean flipped = false;
+	private boolean facingRight = true;
 	
 	public Stickman(Vector2 position, int health, Texture image) {
 		this.setPosition(position);
@@ -95,12 +95,13 @@ public class Stickman {
 		animationCallback();
 	}
 
-	public void render(SpriteBatch batch) {
+	public void render(SpriteBatch batch, boolean flipped) {
 		TextureRegion currentFrame;
 		float t = Gdx.graphics.getDeltaTime();
 		stateTime += t;
 		Animation currentAnimation = getCurrentAnimation();
 		currentFrame = currentAnimation.getKeyFrame(stateTime);
+		currentFrame.flip(flipped, false);
 		batch.draw(currentFrame, position.x, position.y);
 	}
 	
@@ -124,11 +125,11 @@ public class Stickman {
 		this.stateTime = stateTime;
 	}
 
-	public boolean isFlipped() {
-		return flipped;
+	public boolean isFacingRight() {
+		return facingRight;
 	}
 
-	public void setFlipped(boolean flipped) {
-		this.flipped = flipped;
+	public void setFacingRight(boolean facingRight) {
+		this.facingRight = facingRight;
 	}
 }

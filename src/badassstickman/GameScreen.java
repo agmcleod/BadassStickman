@@ -17,6 +17,7 @@ public class GameScreen implements Screen {
 	private Texture stickman;
 	private TextureRegion healthBar;
 	private Player player;
+	private boolean flipped = false;
 	
 	static final int TILE_SIZE = 32; 
 	
@@ -26,10 +27,16 @@ public class GameScreen implements Screen {
 	
 	public void checkPlayerControls() {
 		if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-			player.setFlipped(true);
+			if(player.isFacingRight()) {
+				flipped = true;
+				player.setFacingRight(false);
+			}
 		}
 		else if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-			player.setFlipped(false);
+			if(!player.isFacingRight()) {
+				flipped = true;
+				player.setFacingRight(true);
+			}
 		}
 	}
 
@@ -58,7 +65,8 @@ public class GameScreen implements Screen {
 		batch.begin();
 		batch.draw(background, 0, 0);
 		batch.draw(healthBar, TILE_SIZE, Gdx.graphics.getHeight() - TILE_SIZE * 2);
-		player.render(batch);
+		player.render(batch, flipped);
+		flipped = false;
 		batch.end();
 		
 		player.debug();
