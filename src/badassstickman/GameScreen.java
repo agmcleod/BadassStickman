@@ -1,4 +1,6 @@
 package badassstickman;
+import java.util.Iterator;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -7,17 +9,19 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Array;
 
 
 public class GameScreen implements Screen {
 	
 	private Texture background;
 	private SpriteBatch batch;
+	private Array<Enemy> enemies;
+	private boolean flipped = false;
 	private BadassStickman game;
-	private Texture stickman;
 	private TextureRegion healthBar;
 	private Player player;
-	private boolean flipped = false;
+	private Texture stickman;
 	
 	static final int TILE_SIZE = 32; 
 	
@@ -67,6 +71,12 @@ public class GameScreen implements Screen {
 		batch.draw(healthBar, TILE_SIZE, Gdx.graphics.getHeight() - TILE_SIZE * 2);
 		player.render(batch, flipped);
 		flipped = false;
+		
+		Iterator<Enemy> it = enemies.iterator();
+		while(it.hasNext()) {
+			Enemy e = it.next();
+			e.render(batch);
+		}
 		batch.end();
 		
 		player.debug();
@@ -89,6 +99,8 @@ public class GameScreen implements Screen {
 		batch = new SpriteBatch();
 		healthBar = new TextureRegion(stickman, 0, TILE_SIZE * 28, TILE_SIZE * 8, TILE_SIZE);
 		player = new Player(stickman);
+		enemies = new Array<Enemy>();
+		enemies.add(Enemy.spawn(stickman));
 	}
 	
 	public void update() {
