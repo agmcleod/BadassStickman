@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
 
@@ -105,5 +106,11 @@ public class GameScreen implements Screen {
 	
 	public void update() {
 		checkPlayerControls();
+		Iterator<Enemy> it = enemies.iterator();
+		Rectangle r = player.getWorldBoundingBox();
+		while(it.hasNext()) {
+			Enemy e = it.next();
+			e.update(r.x, r.y);
+		}
 	}
 }

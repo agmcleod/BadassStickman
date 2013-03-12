@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Enemy extends Stickman {
 	private boolean flipped;
+	private int movementSpeed = 5;
 	
 	public Enemy(Vector2 position, Texture image, boolean flipped) {
 		super(position, 5, image);
@@ -17,10 +18,6 @@ public class Enemy extends Stickman {
 		TextureRegion[] regions = new TextureRegion[1];
 		regions[0] = getTexturRegionForFrame(frames[0], flipped);
 		addAnimation("idle", 0, regions, false);
-	}
-	
-	public void render(SpriteBatch batch) {
-		super.render(batch, false);
 	}
 	
 	public static Enemy spawn(Texture image) {
@@ -33,6 +30,31 @@ public class Enemy extends Stickman {
 		else {
 			x = MathUtils.random(450, 750);
 		}
-		return new Enemy(new Vector2(x, y), image, !leftOfPlayer);
+		return new Enemy(new Vector2(x-60, y), image, !leftOfPlayer);
+	}
+	
+	public void render(SpriteBatch batch) {
+		super.render(batch, false);
+	}
+	
+	public void update(float x, float y) {
+		Vector2 position = getPosition();
+		float upX = position.x;
+		if(position.x < x) {
+			upX += movementSpeed;
+			if(upX > x) {
+				upX = x;
+			}
+		}
+		else if(position.x > x) {
+			upX -= movementSpeed;
+			if(upX < x) {
+				upX = x;
+			}
+		}
+		
+		position.x = upX;
+		System.out.println(position.x);
+		setPosition(position);
 	}
 }
