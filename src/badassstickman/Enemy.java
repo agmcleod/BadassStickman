@@ -1,8 +1,11 @@
 package badassstickman;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
@@ -31,6 +34,27 @@ public class Enemy extends Stickman {
 			x = MathUtils.random(450, 750);
 		}
 		return new Enemy(new Vector2(x-60, y), image, !leftOfPlayer);
+	}
+	
+	public void drawHealth() {
+		ShapeRenderer renderer = getRenderer();
+		renderer.begin(ShapeType.FilledRectangle);
+		Vector2 position = getPosition();
+		float width = getBoundingBox().width;
+		float percent = (getHealth() / getMaxHealth());
+		width *= percent;
+		if(percent >= 0.5) {
+			renderer.setColor(Color.GREEN);
+		}
+		else if(percent < 0.5 && percent > 0.25) {
+			renderer.setColor(Color.YELLOW);
+		}
+		else {
+			renderer.setColor(Color.RED);
+		}
+		
+		renderer.filledRect(position.x + getBoundingBox().x, position.y + getBoundingBox().height + 3, width, 6);
+		renderer.end();
 	}
 	
 	public boolean getFlipped() {

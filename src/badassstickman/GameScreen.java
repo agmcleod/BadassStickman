@@ -51,6 +51,10 @@ public class GameScreen implements Screen {
 		batch.dispose();
 		stickman.dispose();
 		player.dispose();
+		Iterator<Enemy> it = enemies.iterator();
+		while(it.hasNext()) {
+			it.next().dispose();
+		}
 	}
 
 	@Override
@@ -75,13 +79,14 @@ public class GameScreen implements Screen {
 		
 		Iterator<Enemy> it = enemies.iterator();
 		while(it.hasNext()) {
-			Enemy e = it.next();
-			e.render(batch);
+			it.next().render(batch);
 		}
 		batch.end();
 		
-		enemies.get(0).debug();
-		
+		it = enemies.iterator();
+		while(it.hasNext()) {
+			it.next().drawHealth();
+		}
 		player.debug();
 	}
 

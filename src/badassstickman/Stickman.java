@@ -16,18 +16,22 @@ import com.badlogic.gdx.utils.ObjectMap;
 
 public class Stickman {
 	private ObjectMap<String, Animation> animations;
+	private int attackSpeed = 200;
 	private Rectangle boundingBox;
 	private String currentAnimation;
+	private boolean facingRight = true;
 	private int health;
 	private Texture image;
+	private int maxHealth;
 	private Vector2 position;
 	private ShapeRenderer renderer;
 	private float stateTime = 0;
-	private boolean facingRight = true;
+	
 	
 	public Stickman(Vector2 position, int health, Texture image) {
 		this.setPosition(position);
 		this.setHealth(health);
+		this.setMaxHealth(health);
 		this.setImage(image);
 		
 		animations = new ObjectMap<String, Animation>();
@@ -58,14 +62,18 @@ public class Stickman {
 		renderer.dispose();
 	}
 	
+	public int getAttackSpeed() {
+		return attackSpeed;
+	}
+	
 	public Rectangle getBoundingBox() {
 		return this.boundingBox;
 	}
-	
+
 	public Animation getCurrentAnimation() {
 		return animations.get(currentAnimation);
 	}
-
+	
 	public int getHealth() {
 		return health;
 	}
@@ -74,10 +82,18 @@ public class Stickman {
 		return image;
 	}
 	
+	public int getMaxHealth() {
+		return maxHealth;
+	}
+
 	public Vector2 getPosition() {
 		return position;
 	}
 
+	public ShapeRenderer getRenderer() {
+		return renderer;
+	}
+	
 	public float getStateTime() {
 		return stateTime;
 	}
@@ -87,12 +103,16 @@ public class Stickman {
 		region.flip(flipped, false);
 		return region;
 	}
-	
+
 	public Rectangle getWorldBoundingBox() {
 		Rectangle bounding = getBoundingBox();
 		return new Rectangle(bounding.x + position.x, bounding.y + position.y, bounding.width, bounding.height);
 	}
-
+	
+	public boolean isFacingRight() {
+		return facingRight;
+	}
+	
 	public void onAnimationEnded(AnimationEvent e) {
 		animationCallback();
 	}
@@ -106,11 +126,19 @@ public class Stickman {
 		currentFrame.flip(flipped, false);
 		batch.draw(currentFrame, position.x, position.y);
 	}
-	
+
+	public void setAttackSpeed(int attackSpeed) {
+		this.attackSpeed = attackSpeed;
+	}
+
 	public void setCurrentAnimation(String animation) {
 		this.currentAnimation = animation;
 	}
-	
+
+	public void setFacingRight(boolean facingRight) {
+		this.facingRight = facingRight;
+	}
+
 	public void setHealth(int health) {
 		this.health = health;
 	}
@@ -119,19 +147,15 @@ public class Stickman {
 		this.image = image;
 	}
 
+	public void setMaxHealth(int maxHealth) {
+		this.maxHealth = maxHealth;
+	}
+
 	public void setPosition(Vector2 position) {
 		this.position = position;
 	}
 
 	public void setStateTime(float stateTime) {
 		this.stateTime = stateTime;
-	}
-
-	public boolean isFacingRight() {
-		return facingRight;
-	}
-
-	public void setFacingRight(boolean facingRight) {
-		this.facingRight = facingRight;
 	}
 }
