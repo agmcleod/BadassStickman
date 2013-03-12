@@ -33,28 +33,33 @@ public class Enemy extends Stickman {
 		return new Enemy(new Vector2(x-60, y), image, !leftOfPlayer);
 	}
 	
+	public boolean getFlipped() {
+		return this.flipped;
+	}
+	
 	public void render(SpriteBatch batch) {
 		super.render(batch, false);
 	}
 	
 	public void update(float x, float y) {
-		Vector2 position = getPosition();
-		float upX = position.x;
-		if(position.x < x) {
+		float posX = getWorldBoundingBox().x;
+		float upX = posX;
+		if(posX < x) {
 			upX += movementSpeed;
 			if(upX > x) {
 				upX = x;
 			}
 		}
-		else if(position.x > x) {
+		else if(posX > x) {
 			upX -= movementSpeed;
 			if(upX < x) {
 				upX = x;
 			}
 		}
 		
-		position.x = upX;
-		System.out.println(position.x);
+		posX = upX;
+		Vector2 position = getPosition();
+		position.x = posX - getBoundingBox().x;
 		setPosition(position);
 	}
 }

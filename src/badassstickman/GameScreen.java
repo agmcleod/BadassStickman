@@ -80,6 +80,8 @@ public class GameScreen implements Screen {
 		}
 		batch.end();
 		
+		enemies.get(0).debug();
+		
 		player.debug();
 	}
 
@@ -110,7 +112,13 @@ public class GameScreen implements Screen {
 		Rectangle r = player.getWorldBoundingBox();
 		while(it.hasNext()) {
 			Enemy e = it.next();
-			e.update(r.x, r.y);
+			if(e.getFlipped()) {
+				e.update(r.x + player.getBoundingBox().width, r.y);
+			}
+			else {
+				e.update(r.x - e.getBoundingBox().width, r.y);
+			}
+			
 		}
 	}
 }
