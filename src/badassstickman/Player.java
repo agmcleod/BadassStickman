@@ -11,7 +11,7 @@ public class Player extends Stickman {
 		AnimationFrame[] frames = new AnimationFrame[1];
 		frames[0] = new AnimationFrame(0, 0, 128, 128);
 		TextureRegion[] regions = new TextureRegion[1];
-		regions[0] = getTexturRegionForFrame(frames[0]);
+		regions[0] = getTexturRegionForFrame(frames[0], false);
 		addAnimation("idle", 0, regions, false);
 	}
 }

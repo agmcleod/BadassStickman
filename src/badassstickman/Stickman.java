@@ -82,8 +82,10 @@ public class Stickman {
 		return stateTime;
 	}
 
-	public TextureRegion getTexturRegionForFrame(AnimationFrame frame) {
-		return new TextureRegion(image, frame.getXCoordinate(), frame.getYCoordinate(), frame.width, frame.height);
+	public TextureRegion getTexturRegionForFrame(AnimationFrame frame, boolean flipped) {
+		TextureRegion region = new TextureRegion(image, frame.getXCoordinate(), frame.getYCoordinate(), frame.width, frame.height);
+		region.flip(flipped, false);
+		return region;
 	}
 	
 	public Rectangle getWorldBoundingBox() {

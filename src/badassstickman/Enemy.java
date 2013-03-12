@@ -11,16 +11,16 @@ public class Enemy extends Stickman {
 	
 	public Enemy(Vector2 position, Texture image, boolean flipped) {
 		super(position, 5, image);
+		this.flipped = flipped;
 		AnimationFrame[] frames = new AnimationFrame[1];
 		frames[0] = new AnimationFrame(0, 4, 128, 128);
 		TextureRegion[] regions = new TextureRegion[1];
-		regions[0] = getTexturRegionForFrame(frames[0]);
+		regions[0] = getTexturRegionForFrame(frames[0], flipped);
 		addAnimation("idle", 0, regions, false);
-		this.flipped = flipped;
 	}
 	
 	public void render(SpriteBatch batch) {
-		super.render(batch, this.flipped);
+		super.render(batch, false);
 	}
 	
 	public static Enemy spawn(Texture image) {
