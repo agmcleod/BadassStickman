@@ -16,12 +16,13 @@ import com.badlogic.gdx.utils.ObjectMap;
 
 public class Stickman {
 	private ObjectMap<String, Animation> animations;
-	private int attackSpeed = 200;
+	private float attackSpeed = 0.2f;
 	private Rectangle boundingBox;
 	private String currentAnimation;
 	private boolean facingRight = true;
 	private int health;
 	private Texture image;
+	private float lastAttack = 0;
 	private int maxHealth;
 	private Vector2 position;
 	private ShapeRenderer renderer;
@@ -62,7 +63,7 @@ public class Stickman {
 		renderer.dispose();
 	}
 	
-	public int getAttackSpeed() {
+	public float getAttackSpeed() {
 		return attackSpeed;
 	}
 	
@@ -157,5 +158,13 @@ public class Stickman {
 
 	public void setStateTime(float stateTime) {
 		this.stateTime = stateTime;
+	}
+
+	public float getLastAttack() {
+		return lastAttack;
+	}
+
+	public void setLastAttack(float lastAttack) {
+		this.lastAttack = lastAttack;
 	}
 }

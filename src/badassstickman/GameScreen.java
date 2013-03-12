@@ -30,6 +30,20 @@ public class GameScreen implements Screen {
 		this.game = game;
 	}
 	
+	public void attack() {
+		float time = player.getStateTime();
+		if(time - player.getLastAttack() > player.getAttackSpeed()) {
+			player.setLastAttack(time);
+			System.out.println("Attack!");
+			if(player.isFacingRight()) {
+				
+			}
+			else {
+				
+			}
+		}
+	}
+	
 	public void checkPlayerControls() {
 		if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
 			if(player.isFacingRight()) {
@@ -42,6 +56,10 @@ public class GameScreen implements Screen {
 				flipped = true;
 				player.setFacingRight(true);
 			}
+		}
+		
+		if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+			attack();
 		}
 	}
 
