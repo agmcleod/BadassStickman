@@ -41,7 +41,7 @@ public class Enemy extends Stickman {
 		renderer.begin(ShapeType.FilledRectangle);
 		Vector2 position = getPosition();
 		float width = getBoundingBox().width;
-		float percent = (getHealth() / getMaxHealth());
+		float percent = ((float) getHealth() / (float) getMaxHealth());
 		width *= percent;
 		if(percent >= 0.5) {
 			renderer.setColor(Color.GREEN);

@@ -34,12 +34,20 @@ public class GameScreen implements Screen {
 		float time = player.getStateTime();
 		if(time - player.getLastAttack() > player.getAttackSpeed()) {
 			player.setLastAttack(time);
-			System.out.println("Attack!");
+			float xCoord = 0;
+			Rectangle box =  player.getWorldBoundingBox();
 			if(player.isFacingRight()) {
-				
+				xCoord = box.x + box.width + 10;
 			}
 			else {
-				
+				xCoord = box.x - 10;
+			}
+			Iterator<Enemy> it = enemies.iterator();
+			while(it.hasNext()) {
+				Enemy e = it.next();
+				if(e.getWorldBoundingBox().contains(xCoord, box.y + box.height / 2)) {
+					e.setHealth(e.getHealth() - 1);
+				}
 			}
 		}
 	}
@@ -103,7 +111,9 @@ public class GameScreen implements Screen {
 		
 		it = enemies.iterator();
 		while(it.hasNext()) {
-			it.next().drawHealth();
+			Enemy e = it.next();
+			e.drawHealth();
+			e.debug();
 		}
 		player.debug();
 	}
