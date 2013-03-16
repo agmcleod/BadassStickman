@@ -151,7 +151,9 @@ public class GameScreen implements Screen {
 			else {
 				e.update(r.x - e.getBoundingBox().width, r.y);
 			}
-			
+			if(e.getHealth() == 0) {
+				it.remove();
+			}
 		}
 	}
 }
