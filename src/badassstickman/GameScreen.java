@@ -4,11 +4,14 @@ import java.util.Iterator;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
@@ -20,8 +23,9 @@ public class GameScreen implements Screen {
 	private Array<Enemy> enemies;
 	private boolean flipped = false;
 	private BadassStickman game;
-	private TextureRegion healthBar;
 	private Player player;
+	private ShapeRenderer renderer;
+	private float spawnTimer = 0;
 	private Texture stickman;
 	
 	static final int TILE_SIZE = 32; 
@@ -56,6 +60,7 @@ public class GameScreen implements Screen {
 		stickman.dispose();
 		player.dispose();
 		Iterator<Enemy> it = enemies.iterator();
+		renderer.dispose();
 		while(it.hasNext()) {
 			it.next().dispose();
 		}
@@ -77,7 +82,6 @@ public class GameScreen implements Screen {
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		batch.begin();
 		batch.draw(background, 0, 0);
-		batch.draw(healthBar, TILE_SIZE, Gdx.graphics.getHeight() - TILE_SIZE * 2, 256 * (player.getHealth() / player.getMaxHealth()), 32);
 		player.render(batch, flipped);
 		flipped = false;
 		
@@ -86,6 +90,20 @@ public class GameScreen implements Screen {
 			it.next().render(batch);
 		}
 		batch.end();
+		
+		renderer.begin(ShapeType.FilledRectangle);
+		float percent = (player.getHealth() / player.getMaxHealth());
+		if(percent >= 0.5) {
+			renderer.setColor(Color.GREEN);
+		}
+		else if(percent < 0.5 && percent > 0.25) {
+			renderer.setColor(Color.YELLOW);
+		}
+		else {
+			renderer.setColor(Color.RED);
+		}
+		renderer.filledRect(TILE_SIZE, Gdx.graphics.getHeight() - TILE_SIZE * 2, 256f * percent, 32);
+		renderer.end();
 		
 		it = enemies.iterator();
 		while(it.hasNext()) {
@@ -111,10 +129,10 @@ public class GameScreen implements Screen {
 		background = new Texture(Gdx.files.internal("assets/basm_background.png"));
 		stickman = new Texture(Gdx.files.internal("assets/stickman.png"));
 		batch = new SpriteBatch();
-		healthBar = new TextureRegion(stickman, 0, TILE_SIZE * 28, TILE_SIZE * 8, TILE_SIZE);
 		player = new Player(stickman);
 		enemies = new Array<Enemy>();
 		enemies.add(Enemy.spawn(stickman));
+		renderer = new ShapeRenderer();
 	}
 	
 	public void update() {
@@ -132,6 +150,11 @@ public class GameScreen implements Screen {
 			if(e.getHealth() == 0) {
 				it.remove();
 			}
+		}
+		spawnTimer += Gdx.graphics.getDeltaTime();
+		if(spawnTimer > 3) {
+			spawnTimer = 0;
+			enemies.add(Enemy.spawn(stickman));
 		}
 	}
 }

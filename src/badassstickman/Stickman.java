@@ -22,10 +22,10 @@ public class Stickman {
 	private Rectangle boundingBox;
 	private String currentAnimation;
 	private boolean facingRight = true;
-	private int health;
+	private float health;
 	private Texture image;
 	private float lastAttack = 0;
-	private int maxHealth;
+	private float maxHealth;
 	private Vector2 position;
 	private ShapeRenderer renderer;
 	private float stateTime = 0;
@@ -78,7 +78,7 @@ public class Stickman {
 		return animations.get(currentAnimation);
 	}
 	
-	public int getHealth() {
+	public float getHealth() {
 		return health;
 	}
 	
@@ -86,7 +86,7 @@ public class Stickman {
 		return image;
 	}
 	
-	public int getMaxHealth() {
+	public float getMaxHealth() {
 		return maxHealth;
 	}
 
@@ -143,7 +143,7 @@ public class Stickman {
 		this.facingRight = facingRight;
 	}
 
-	public void setHealth(int health) {
+	public void setHealth(float health) {
 		this.health = health;
 	}
 
@@ -151,7 +151,7 @@ public class Stickman {
 		this.image = image;
 	}
 
-	public void setMaxHealth(int maxHealth) {
+	public void setMaxHealth(float maxHealth) {
 		this.maxHealth = maxHealth;
 	}
 

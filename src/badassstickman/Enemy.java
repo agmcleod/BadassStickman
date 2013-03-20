@@ -22,6 +22,7 @@ public class Enemy extends Stickman {
 		super(position, 5, image);
 		setAttackSpeed(1.2f);
 		this.flipped = flipped;
+		setFacingRight(!flipped);
 		AnimationFrame[] frames = new AnimationFrame[1];
 		frames[0] = new AnimationFrame(0, 4, 128, 128);
 		TextureRegion[] regions = new TextureRegion[1];
@@ -54,10 +55,8 @@ public class Enemy extends Stickman {
 			else {
 				xCoord = box.x - 10;
 			}
-			
 			if(player.getWorldBoundingBox().contains(xCoord, box.y + box.height / 2)) {
 				player.setHealth(player.getHealth() - 1);
-				System.out.println("hp: " + player.getHealth());
 			}
 		}
 	}
