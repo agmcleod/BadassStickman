@@ -1,4 +1,6 @@
 package badassstickman;
+import java.util.Iterator;
+
 import badassstickman.Animation.AnimationEvent;
 
 import com.badlogic.gdx.Gdx;
@@ -16,7 +18,7 @@ import com.badlogic.gdx.utils.ObjectMap;
 
 public class Stickman {
 	private ObjectMap<String, Animation> animations;
-	private float attackSpeed = 0.2f;
+	private float attackSpeed;
 	private Rectangle boundingBox;
 	private String currentAnimation;
 	private boolean facingRight = true;
@@ -50,6 +52,7 @@ public class Stickman {
 	public void animationCallback() {
 		setCurrentAnimation("idle");
 	}
+	
 	
 	public void debug() {
 		Rectangle r = getWorldBoundingBox();
@@ -128,7 +131,7 @@ public class Stickman {
 		batch.draw(currentFrame, position.x, position.y);
 	}
 
-	public void setAttackSpeed(int attackSpeed) {
+	public void setAttackSpeed(float attackSpeed) {
 		this.attackSpeed = attackSpeed;
 	}
 

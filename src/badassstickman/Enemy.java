@@ -1,5 +1,7 @@
 package badassstickman;
 
+import java.util.Iterator;
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -7,14 +9,18 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 
 public class Enemy extends Stickman {
 	private boolean flipped;
 	private int movementSpeed = 5;
+	private boolean isMoving = true;
 	
 	public Enemy(Vector2 position, Texture image, boolean flipped) {
 		super(position, 5, image);
+		setAttackSpeed(1.2f);
 		this.flipped = flipped;
 		AnimationFrame[] frames = new AnimationFrame[1];
 		frames[0] = new AnimationFrame(0, 4, 128, 128);
@@ -34,6 +40,26 @@ public class Enemy extends Stickman {
 			x = MathUtils.random(450, 750);
 		}
 		return new Enemy(new Vector2(x-60, y), image, !leftOfPlayer);
+	}
+	
+	public void attack(Player player) {
+		float time = getStateTime();
+		if(time - getLastAttack() > getAttackSpeed()) {
+			setLastAttack(time);
+			float xCoord = 0;
+			Rectangle box = getWorldBoundingBox();
+			if(isFacingRight()) {
+				xCoord = box.x + box.width + 10;
+			}
+			else {
+				xCoord = box.x - 10;
+			}
+			
+			if(player.getWorldBoundingBox().contains(xCoord, box.y + box.height / 2)) {
+				player.setHealth(player.getHealth() - 1);
+				System.out.println("hp: " + player.getHealth());
+			}
+		}
 	}
 	
 	public void drawHealth() {
@@ -65,9 +91,10 @@ public class Enemy extends Stickman {
 		super.render(batch, false);
 	}
 	
-	public void update(float x, float y) {
+	public void update(float x, float y, Player player) {
 		float posX = getWorldBoundingBox().x;
 		float upX = posX;
+		isMoving = true;
 		if(posX < x) {
 			upX += movementSpeed;
 			if(upX > x) {
@@ -80,10 +107,18 @@ public class Enemy extends Stickman {
 				upX = x;
 			}
 		}
+		else {
+			isMoving = false;
+		}
 		
-		posX = upX;
-		Vector2 position = getPosition();
-		position.x = posX - getBoundingBox().x;
-		setPosition(position);
+		if(isMoving) {
+			posX = upX;
+			Vector2 position = getPosition();
+			position.x = posX - getBoundingBox().x;
+			setPosition(position);
+		}
+		else {
+			attack(player);
+		}
 	}
 }

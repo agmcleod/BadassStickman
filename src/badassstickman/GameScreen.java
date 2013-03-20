@@ -29,29 +29,7 @@ public class GameScreen implements Screen {
 	public GameScreen(BadassStickman game) {
 		this.game = game;
 	}
-	
-	public void attack() {
-		float time = player.getStateTime();
-		if(time - player.getLastAttack() > player.getAttackSpeed()) {
-			player.setLastAttack(time);
-			float xCoord = 0;
-			Rectangle box =  player.getWorldBoundingBox();
-			if(player.isFacingRight()) {
-				xCoord = box.x + box.width + 10;
-			}
-			else {
-				xCoord = box.x - 10;
-			}
-			Iterator<Enemy> it = enemies.iterator();
-			while(it.hasNext()) {
-				Enemy e = it.next();
-				if(e.getWorldBoundingBox().contains(xCoord, box.y + box.height / 2)) {
-					e.setHealth(e.getHealth() - 1);
-				}
-			}
-		}
-	}
-	
+
 	public void checkPlayerControls() {
 		if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
 			if(player.isFacingRight()) {
@@ -67,7 +45,7 @@ public class GameScreen implements Screen {
 		}
 		
 		if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-			attack();
+			player.attack(enemies);
 		}
 	}
 
@@ -99,7 +77,7 @@ public class GameScreen implements Screen {
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		batch.begin();
 		batch.draw(background, 0, 0);
-		batch.draw(healthBar, TILE_SIZE, Gdx.graphics.getHeight() - TILE_SIZE * 2);
+		batch.draw(healthBar, TILE_SIZE, Gdx.graphics.getHeight() - TILE_SIZE * 2, 256 * (player.getHealth() / player.getMaxHealth()), 32);
 		player.render(batch, flipped);
 		flipped = false;
 		
@@ -146,10 +124,10 @@ public class GameScreen implements Screen {
 		while(it.hasNext()) {
 			Enemy e = it.next();
 			if(e.getFlipped()) {
-				e.update(r.x + player.getBoundingBox().width, r.y);
+				e.update(r.x + player.getBoundingBox().width, r.y, player);
 			}
 			else {
-				e.update(r.x - e.getBoundingBox().width, r.y);
+				e.update(r.x - e.getBoundingBox().width, r.y, player);
 			}
 			if(e.getHealth() == 0) {
 				it.remove();
