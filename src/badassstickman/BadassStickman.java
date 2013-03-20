@@ -7,11 +7,13 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 public class BadassStickman extends Game {
 	
 	private GameScreen gameScreen;
+	private StartScreen startScreen;
 
 	@Override
 	public void create() {
 		gameScreen = new GameScreen(this);
-		setScreen(gameScreen);
+		startScreen = new StartScreen(this);
+		setScreen(startScreen);
 	}
 	
 	public static void main(String[] args) {
