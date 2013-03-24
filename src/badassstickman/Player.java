@@ -34,13 +34,12 @@ public class Player extends Stickman {
 			regions[index] = getTextureRegionForFrame(frames[i], false);
 			index++;
 		}
-		addAnimation("attack", 0.1f, regions, false);
+		addAnimation("attack", 0.02f, regions, false, true);
 	}
 	
 	public void attack(Array<Enemy> enemies) {
 		float time = getStateTime();
-		if(time - getLastAttack() > getAttackSpeed()) {
-			setLastAttack(time);
+		if(time > getAttackSpeed()) {
 			setCurrentAnimation("attack");
 			float xCoord = 0;
 			Rectangle box =  getWorldBoundingBox();

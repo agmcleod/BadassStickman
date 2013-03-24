@@ -47,9 +47,9 @@ public class Enemy extends Stickman {
 	
 	public void attack(Player player) {
 		float time = getStateTime();
-		if(time - getLastAttack() > getAttackSpeed()) {
-			setLastAttack(time);
+		if(time > getAttackSpeed()) {
 			float xCoord = 0;
+			setStateTime(0);
 			Rectangle box = getWorldBoundingBox();
 			if(isFacingRight()) {
 				xCoord = box.x + box.width + 10;

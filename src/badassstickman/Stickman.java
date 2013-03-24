@@ -24,7 +24,6 @@ public class Stickman implements Animation.AnimationEventListener {
 	private boolean facingRight = true;
 	private float health;
 	private Texture image;
-	private float lastAttack = 0;
 	private float maxHealth;
 	private Vector2 position;
 	private ShapeRenderer renderer;
@@ -43,6 +42,14 @@ public class Stickman implements Animation.AnimationEventListener {
 	}
 	
 	public void addAnimation(String name, float frameDuration, TextureRegion[] keyFrames, boolean loop) {
+		Animation animation = new Animation(frameDuration, keyFrames, loop);
+		animations.put(name, animation);
+		if(animations.size == 1) {
+			currentAnimation = name;
+		}
+	}
+	
+	public void addAnimation(String name, float frameDuration, TextureRegion[] keyFrames, boolean loop, boolean listener) {
 		Animation animation = new Animation(frameDuration, keyFrames, loop);
 		animation.addEventListener(this);
 		animations.put(name, animation);
@@ -129,7 +136,6 @@ public class Stickman implements Animation.AnimationEventListener {
 		stateTime += t;
 		Animation currentAnimation = getCurrentAnimation();
 		currentFrame = currentAnimation.getKeyFrame(stateTime);
-		currentFrame.flip(flipped, false);
 		batch.draw(currentFrame, position.x, position.y);
 	}
 
@@ -138,11 +144,19 @@ public class Stickman implements Animation.AnimationEventListener {
 	}
 
 	public void setCurrentAnimation(String animation) {
+		this.stateTime = 0;
 		this.currentAnimation = animation;
 	}
 
 	public void setFacingRight(boolean facingRight) {
 		this.facingRight = facingRight;
+		Iterator<String> keys = animations.keys().iterator();
+		while(keys.hasNext()) {
+			Animation a = animations.get(keys.next());
+			for(int i = 0; i < a.keyFrames.length; i++) {
+				a.keyFrames[i].flip(true, false);
+			}
+		}
 	}
 
 	public void setHealth(float health) {
@@ -163,13 +177,5 @@ public class Stickman implements Animation.AnimationEventListener {
 
 	public void setStateTime(float stateTime) {
 		this.stateTime = stateTime;
-	}
-
-	public float getLastAttack() {
-		return lastAttack;
-	}
-
-	public void setLastAttack(float lastAttack) {
-		this.lastAttack = lastAttack;
 	}
 }
