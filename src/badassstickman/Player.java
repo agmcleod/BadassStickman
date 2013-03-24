@@ -16,14 +16,32 @@ public class Player extends Stickman {
 		AnimationFrame[] frames = new AnimationFrame[1];
 		frames[0] = new AnimationFrame(0, 0, 128, 128);
 		TextureRegion[] regions = new TextureRegion[1];
-		regions[0] = getTexturRegionForFrame(frames[0], false);
+		regions[0] = getTextureRegionForFrame(frames[0], false);
 		addAnimation("idle", 0, regions, false);
+		
+		frames = new AnimationFrame[7];
+		for(int i = 0; i < frames.length; i++) {
+			frames[i] = new AnimationFrame(i + 1, 0, 128, 128);
+		}
+		regions = new TextureRegion[13];
+		
+		for(int i = 0; i < frames.length; i++) {
+			regions[i] = getTextureRegionForFrame(frames[i], false);
+		}
+		
+		int index = 7;
+		for(int i = frames.length - 2; i > -1; i--) {
+			regions[index] = getTextureRegionForFrame(frames[i], false);
+			index++;
+		}
+		addAnimation("attack", 0.1f, regions, false);
 	}
 	
 	public void attack(Array<Enemy> enemies) {
 		float time = getStateTime();
 		if(time - getLastAttack() > getAttackSpeed()) {
 			setLastAttack(time);
+			setCurrentAnimation("attack");
 			float xCoord = 0;
 			Rectangle box =  getWorldBoundingBox();
 			if(isFacingRight()) {

@@ -16,7 +16,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ObjectMap;
 
 
-public class Stickman {
+public class Stickman implements Animation.AnimationEventListener {
 	private ObjectMap<String, Animation> animations;
 	private float attackSpeed;
 	private Rectangle boundingBox;
@@ -43,7 +43,9 @@ public class Stickman {
 	}
 	
 	public void addAnimation(String name, float frameDuration, TextureRegion[] keyFrames, boolean loop) {
-		animations.put(name, new Animation(frameDuration, keyFrames, loop));
+		Animation animation = new Animation(frameDuration, keyFrames, loop);
+		animation.addEventListener(this);
+		animations.put(name, animation);
 		if(animations.size == 1) {
 			currentAnimation = name;
 		}
@@ -102,7 +104,7 @@ public class Stickman {
 		return stateTime;
 	}
 
-	public TextureRegion getTexturRegionForFrame(AnimationFrame frame, boolean flipped) {
+	public TextureRegion getTextureRegionForFrame(AnimationFrame frame, boolean flipped) {
 		TextureRegion region = new TextureRegion(image, frame.getXCoordinate(), frame.getYCoordinate(), frame.width, frame.height);
 		region.flip(flipped, false);
 		return region;
