@@ -2,6 +2,7 @@ package badassstickman;
 
 import java.util.Iterator;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -33,12 +34,13 @@ public class Enemy extends Stickman {
 	public static Enemy spawn(Texture image) {
 		int y = 32;
 		int x = 0;
+		int midPoint = Gdx.graphics.getWidth() / 2;
 		boolean leftOfPlayer = Math.random() < 0.5;
 		if(leftOfPlayer) {
-			x = MathUtils.random(350);
+			x = MathUtils.random(midPoint - 200);
 		}
 		else {
-			x = MathUtils.random(450, 750);
+			x = MathUtils.random(midPoint + 150, 750);
 		}
 		return new Enemy(new Vector2(x-60, y), image, !leftOfPlayer);
 	}
