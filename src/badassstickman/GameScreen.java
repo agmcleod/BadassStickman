@@ -115,12 +115,9 @@ public class GameScreen implements Screen {
 		while(it.hasNext()) {
 			Enemy e = it.next();
 			e.drawHealth();
-			e.debug();
 		}
-		player.debug();
 		if(boss != null) {
 			boss.drawHealth();
-			boss.debug();
 		}
 	}
 
