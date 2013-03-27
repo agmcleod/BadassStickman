@@ -20,12 +20,15 @@ public class GameScreen implements Screen {
 	
 	private Texture background;
 	private SpriteBatch batch;
+	private Boss boss;
 	private Array<Enemy> enemies;
 	private boolean flipped = false;
 	private BadassStickman game;
+	private float gameTimer = 0;
 	private Player player;
 	private ShapeRenderer renderer;
 	private float spawnTimer = 0;
+	private int spawnAmount = 0;
 	private Texture stickman;
 	
 	static final int TILE_SIZE = 32; 
@@ -49,7 +52,7 @@ public class GameScreen implements Screen {
 		}
 		
 		if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-			player.attack(enemies);
+			player.attack(enemies, boss);
 		}
 	}
 
@@ -83,6 +86,9 @@ public class GameScreen implements Screen {
 		batch.begin();
 		batch.draw(background, 0, 0);
 		player.render(batch, flipped);
+		if(boss != null) {
+			boss.render(batch, flipped);
+		}
 		flipped = false;
 		
 		Iterator<Enemy> it = enemies.iterator();
@@ -112,6 +118,10 @@ public class GameScreen implements Screen {
 			e.debug();
 		}
 		player.debug();
+		if(boss != null) {
+			boss.drawHealth();
+			boss.debug();
+		}
 	}
 
 	@Override
@@ -133,6 +143,7 @@ public class GameScreen implements Screen {
 		enemies = new Array<Enemy>();
 		enemies.add(Enemy.spawn(stickman));
 		renderer = new ShapeRenderer();
+		boss = null;
 	}
 	
 	public void update() {
@@ -152,9 +163,28 @@ public class GameScreen implements Screen {
 			}
 		}
 		spawnTimer += Gdx.graphics.getDeltaTime();
-		if(spawnTimer > 3) {
+		gameTimer += Gdx.graphics.getDeltaTime();
+		if(spawnTimer > 3 && spawnAmount < 7) {
 			spawnTimer = 0;
 			enemies.add(Enemy.spawn(stickman));
+			spawnAmount++;
+		}
+		else if(enemies.size == 0 && boss == null && spawnAmount >= 7) {
+			boss = new Boss(stickman);
+		}
+		
+		if(gameTimer % 2 == 0) {
+			player.setHealth(player.getHealth() + 2);
+			if(player.getHealth() > player.getMaxHealth()) {
+				player.setHealth(player.getMaxHealth());
+			}
+		}
+		
+		if(boss != null) {
+			boss.update(r.x - boss.getBoundingBox().width, r.y, player);
+			if(boss.getHealth() <= 0) {
+				game.setScreen(game.getEndScreen());
+			}
 		}
 	}
 }

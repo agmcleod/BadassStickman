@@ -6,11 +6,13 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
 public class BadassStickman extends Game {
 	
+	private EndScreen endScreen;
 	private GameScreen gameScreen;
 	private StartScreen startScreen;
 
 	@Override
 	public void create() {
+		endScreen = new EndScreen();
 		gameScreen = new GameScreen(this);
 		startScreen = new StartScreen(this);
 		setScreen(startScreen);
@@ -23,6 +25,10 @@ public class BadassStickman extends Game {
 		cfg.useGL20 = true;
 		cfg.title = "Badass Stickman";
 		new LwjglApplication(new BadassStickman(), cfg);
+	}
+	
+	public EndScreen getEndScreen() {
+		return endScreen;
 	}
 
 	public GameScreen getGameScreen() {

@@ -129,6 +129,10 @@ public class Stickman implements Animation.AnimationEventListener {
 	public void onAnimationEnded(AnimationEvent e) {
 		animationCallback();
 	}
+	
+	public void render(SpriteBatch batch) {
+		render(batch, false);
+	}
 
 	public void render(SpriteBatch batch, boolean flipped) {
 		TextureRegion currentFrame;

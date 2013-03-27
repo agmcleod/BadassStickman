@@ -37,7 +37,23 @@ public class Player extends Stickman {
 		addAnimation("attack", 0.02f, regions, false, true);
 	}
 	
-	public void attack(Array<Enemy> enemies) {
+	public void attack(Boss boss) {
+		float time = getStateTime();
+		if(time > getAttackSpeed()) {
+			setCurrentAnimation("attack");
+			float xCoord = 0;
+			Rectangle box =  getWorldBoundingBox();
+			if(isFacingRight()) {
+				xCoord = box.x + box.width + 10;
+			}
+			else {
+				xCoord = box.x - 10;
+			}
+			
+		}
+	}
+	
+	public void attack(Array<Enemy> enemies, Boss boss) {
 		float time = getStateTime();
 		if(time > getAttackSpeed()) {
 			setCurrentAnimation("attack");
@@ -56,6 +72,17 @@ public class Player extends Stickman {
 					e.setHealth(e.getHealth() - 1);
 				}
 			}
+			if(boss != null && boss.getWorldBoundingBox().contains(xCoord, box.y + box.height / 2)) {
+				boss.setHealth(boss.getHealth() - 1);
+			}
+		}
+		
+	}
+	
+	public void setHealth(int health) {
+		super.setHealth(health);
+		if(this.getHealth() <= 0) {
+			Gdx.app.exit();
 		}
 	}
 }
