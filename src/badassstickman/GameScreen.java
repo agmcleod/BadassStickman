@@ -38,13 +38,13 @@ public class GameScreen implements Screen {
 	}
 
 	public void checkPlayerControls() {
-		if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+		if(Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
 			if(player.isFacingRight()) {
 				flipped = true;
 				player.setFacingRight(false);
 			}
 		}
-		else if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+		else if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)){
 			if(!player.isFacingRight()) {
 				flipped = true;
 				player.setFacingRight(true);
@@ -170,6 +170,7 @@ public class GameScreen implements Screen {
 			boss = new Boss(stickman);
 		}
 		
+		// player regen
 		if(gameTimer % 2 == 0) {
 			player.setHealth(player.getHealth() + 2);
 			if(player.getHealth() > player.getMaxHealth()) {
@@ -182,6 +183,13 @@ public class GameScreen implements Screen {
 			if(boss.getHealth() <= 0) {
 				game.setScreen(game.getEndScreen());
 			}
+		}
+		
+		// check if player dead
+		if(player.getHealth() <= 0) {
+			EndScreen screen = game.getEndScreen();
+			screen.setWon(false);
+			game.setScreen(screen);
 		}
 	}
 }

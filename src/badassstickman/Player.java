@@ -78,11 +78,4 @@ public class Player extends Stickman {
 		}
 		
 	}
-	
-	public void setHealth(int health) {
-		super.setHealth(health);
-		if(this.getHealth() <= 0) {
-			Gdx.app.exit();
-		}
-	}
 }

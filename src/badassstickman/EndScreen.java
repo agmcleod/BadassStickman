@@ -11,6 +11,7 @@ public class EndScreen implements Screen {
 	
 	private BitmapFont font;
 	private SpriteBatch batch;
+	private boolean won = true;
 
 	@Override
 	public void dispose() {
@@ -34,7 +35,13 @@ public class EndScreen implements Screen {
 	public void render(float arg0) {
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		batch.begin();
-		font.draw(batch, "You won, press escape to quit.", 100, 700);
+		if(won) {
+			font.draw(batch, "You won, press escape to quit.", 100, 700);
+		}
+		else {
+			font.draw(batch, "You lost, press escape to quit.", 100, 700);
+		}
+		
 		batch.end();
 		if(Gdx.input.isKeyPressed(Keys.ESCAPE)) {
 			Gdx.app.exit();
@@ -51,6 +58,10 @@ public class EndScreen implements Screen {
 	public void resume() {
 		// TODO Auto-generated method stub
 
+	}
+	
+	public void setWon(boolean won) {
+		this.won = won;
 	}
 
 	@Override

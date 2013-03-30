@@ -39,10 +39,10 @@ public class StartScreen implements Screen {
 	public void render(float arg0) {
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		batch.begin();
-		font.draw(batch, "To play, use the arrow keys to change your direction.", 100, 700);
-		font.draw(batch, "To attack enemies as they come in range, simply click the mouse.", 100, 665);
-		font.draw(batch, "You will attack in the same direction that you face.", 100, 630);
-		font.draw(batch, "Press enter to continue", 100, 550);
+		font.draw(batch, "To play, use the arrow or A/D keys to change your direction.", 50, 700);
+		font.draw(batch, "To attack enemies as they come in range, simply click the mouse.", 50, 665);
+		font.draw(batch, "You will attack in the same direction that you face.", 50, 630);
+		font.draw(batch, "Press enter to continue", 50, 550);
 		batch.end();
 		
 		if(Gdx.input.isKeyPressed(Keys.ENTER)) {

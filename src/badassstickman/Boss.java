@@ -16,7 +16,7 @@ public class Boss extends Stickman {
 	
 	public Boss(Texture image) {
 		super(new Vector2(20, 32), 10, image);
-		setAttackSpeed(1.5f);
+		setAttackSpeed(0.8f);
 		AnimationFrame[] frames = new AnimationFrame[1];
 		frames[0] = new AnimationFrame(0, 2, 128, 128);
 		TextureRegion[] regions = new TextureRegion[1];
@@ -55,7 +55,7 @@ public class Boss extends Stickman {
 				xCoord = box.x - 10;
 			}
 			if(player.getWorldBoundingBox().contains(xCoord, box.y + box.height / 2)) {
-				player.setHealth(player.getHealth() - 1);
+				player.setHealth(player.getHealth() - 2);
 			}
 		}
 	}
