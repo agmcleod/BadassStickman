@@ -18,10 +18,27 @@ public class Boss extends Stickman {
 		super(new Vector2(20, 32), 10, image);
 		setAttackSpeed(1.5f);
 		AnimationFrame[] frames = new AnimationFrame[1];
-		frames[0] = new AnimationFrame(0, 6, 128, 128);
+		frames[0] = new AnimationFrame(0, 2, 128, 128);
 		TextureRegion[] regions = new TextureRegion[1];
 		regions[0] = getTextureRegionForFrame(frames[0], false);
 		addAnimation("idle", 0, regions, false);
+		
+		frames = new AnimationFrame[7];
+		for(int i = 0; i < frames.length; i++) {
+			frames[i] = new AnimationFrame(i + 1, 2, 128, 128);
+		}
+		regions = new TextureRegion[13];
+		
+		for(int i = 0; i < frames.length; i++) {
+			regions[i] = getTextureRegionForFrame(frames[i], false);
+		}
+		
+		int index = 7;
+		for(int i = frames.length - 2; i > -1; i--) {
+			regions[index] = getTextureRegionForFrame(frames[i], false);
+			index++;
+		}
+		addAnimation("attack", 0.02f, regions, false, true);
 	}
 	
 	public void attack(Player player) {
@@ -29,6 +46,7 @@ public class Boss extends Stickman {
 		if(time > getAttackSpeed()) {
 			float xCoord = 0;
 			setStateTime(0);
+			setCurrentAnimation("attack");
 			Rectangle box = getWorldBoundingBox();
 			if(isFacingRight()) {
 				xCoord = box.x + box.width + 10;

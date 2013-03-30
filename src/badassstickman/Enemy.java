@@ -22,27 +22,48 @@ public class Enemy extends Stickman {
 	public Enemy(Vector2 position, Texture image, boolean flipped) {
 		super(position, 5, image);
 		setAttackSpeed(1.2f);
+		// flipped true means he's facing to the left
 		this.flipped = flipped;
-		setFacingRight(!flipped);
 		AnimationFrame[] frames = new AnimationFrame[1];
-		frames[0] = new AnimationFrame(0, 4, 128, 128);
+		frames[0] = new AnimationFrame(0, 1, 128, 128);
 		TextureRegion[] regions = new TextureRegion[1];
-		regions[0] = getTextureRegionForFrame(frames[0], flipped);
+		regions[0] = getTextureRegionForFrame(frames[0], false);
 		addAnimation("idle", 0, regions, false);
+		
+		frames = new AnimationFrame[7];
+		for(int i = 0; i < frames.length; i++) {
+			frames[i] = new AnimationFrame(i + 1, 1, 128, 128);
+		}
+		regions = new TextureRegion[13];
+		
+		for(int i = 0; i < frames.length; i++) {
+			regions[i] = getTextureRegionForFrame(frames[i], false);
+		}
+		
+		int index = 7;
+		for(int i = frames.length - 2; i > -1; i--) {
+			regions[index] = getTextureRegionForFrame(frames[i], false);
+			index++;
+		}
+		addAnimation("attack", 0.02f, regions, false, true);
+		if(flipped) {
+			// set that he's not facing right 
+			setFacingRight(!flipped);
+		}
 	}
 	
 	public static Enemy spawn(Texture image) {
 		int y = 32;
 		int x = 0;
 		int midPoint = Gdx.graphics.getWidth() / 2;
-		boolean leftOfPlayer = Math.random() < 0.5;
-		if(leftOfPlayer) {
-			x = MathUtils.random(midPoint - 200);
-		}
-		else {
+		boolean rightOfPlayer = Math.random() < 0.5;
+		if(rightOfPlayer) {
 			x = MathUtils.random(midPoint + 150, 750);
 		}
-		return new Enemy(new Vector2(x-60, y), image, !leftOfPlayer);
+		else {
+			x = MathUtils.random(midPoint - 200);
+		}
+		return new Enemy(new Vector2(x-60, y), image, rightOfPlayer);
 	}
 	
 	public void attack(Player player) {
@@ -50,6 +71,7 @@ public class Enemy extends Stickman {
 		if(time > getAttackSpeed()) {
 			float xCoord = 0;
 			setStateTime(0);
+			setCurrentAnimation("attack");
 			Rectangle box = getWorldBoundingBox();
 			if(isFacingRight()) {
 				xCoord = box.x + box.width + 10;
