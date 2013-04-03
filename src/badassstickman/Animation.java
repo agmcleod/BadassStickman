@@ -6,7 +6,7 @@ import com.badlogic.gdx.utils.Array;
 public class Animation {
 	public class AnimationEvent extends EventObject {  
         public AnimationEvent(Object source) {  
-              super(source);  
+              super(source);
         }  
     }  
     public interface AnimationEventListener {  
